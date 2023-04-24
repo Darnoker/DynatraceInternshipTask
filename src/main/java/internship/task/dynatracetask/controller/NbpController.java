@@ -33,4 +33,12 @@ public class NbpController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @GetMapping(value = "/last/spread/{currencyCode}/{numberOfLastQuotations}")
+    public ResponseEntity<Double> getMajorDifferenceAskBid(@PathVariable String currencyCode, @PathVariable Integer numberOfLastQuotations) {
+        return nbpService
+                .getMajorDifferenceSpread(currencyCode, numberOfLastQuotations)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

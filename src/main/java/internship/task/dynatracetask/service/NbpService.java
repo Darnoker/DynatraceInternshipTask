@@ -3,7 +3,9 @@ package internship.task.dynatracetask.service;
 import internship.task.dynatracetask.config.NbpConfig;
 import internship.task.dynatracetask.data.AverageExchangeRate;
 import internship.task.dynatracetask.data.MaxAndMinRate;
+import internship.task.dynatracetask.data.SpreadRate;
 import internship.task.dynatracetask.response.AverageExchangeRateResponse;
+import internship.task.dynatracetask.response.SpreadResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -66,6 +68,30 @@ public class NbpService {
             return Optional.of(maxAndMinRate);
         }
 
+        return Optional.empty();
+    }
+
+    public Optional<Double> getMajorDifferenceSpread(String currencyCode, Integer numberOfLastQuotations) {
+        final String URL = String.format(
+                "%sc/%s/last/%d/?format=json",
+                nbpConfig.getApiUrl(),
+                currencyCode.toLowerCase(),
+                numberOfLastQuotations
+        );
+
+        Optional<SpreadResponse> responseOptional = Optional.ofNullable(restTemplate.getForObject(URL, SpreadResponse.class));
+
+        if(responseOptional.isPresent()) {
+             ;
+            List<Double> values = responseOptional
+                    .get()
+                    .getRates()
+                    .stream()
+                    .map(askBidRate -> Math.abs(askBidRate.getBid() - askBidRate.getAsk()))
+                    .toList();
+
+            return Optional.of(Collections.max(values));
+        }
         return Optional.empty();
     }
 }
