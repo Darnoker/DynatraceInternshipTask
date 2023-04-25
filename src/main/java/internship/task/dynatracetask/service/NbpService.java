@@ -41,7 +41,6 @@ public class NbpService {
             Optional<AverageExchangeRateResponse> responseOptional = Optional.ofNullable(restTemplate.getForObject(URL, AverageExchangeRateResponse.class));
 
             if(responseOptional.isPresent()) {
-                System.out.println(responseOptional.get());
                 AverageExchangeRateResponse response = responseOptional.get();
                 if(!response.getRates().isEmpty()) {
                     return Optional.of(response.getRates().get(0).getMid());
