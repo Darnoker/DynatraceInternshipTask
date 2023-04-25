@@ -66,7 +66,7 @@ public class NbpExchangeRateServiceTest {
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(response);
 
-        Optional<MaxAndMinRate> maxAndMinRateOptional = nbpExchangeRateService.getMaxAndMinAverageExchangeRate(currencyCode,numberOfLastQuotations);
+        Optional<MaxAndMinRate> maxAndMinRateOptional = nbpExchangeRateService.getLastMaxAndMinAverageExchangeRate(currencyCode,numberOfLastQuotations);
 
         Assertions.assertTrue(maxAndMinRateOptional.isPresent());
         Assertions.assertEquals(expectedResult, maxAndMinRateOptional.get());
@@ -143,7 +143,7 @@ public class NbpExchangeRateServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<MaxAndMinRate> response = nbpExchangeRateService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
+        Optional<MaxAndMinRate> response = nbpExchangeRateService.getLastMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }
@@ -162,7 +162,7 @@ public class NbpExchangeRateServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<MaxAndMinRate> response = nbpExchangeRateService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
+        Optional<MaxAndMinRate> response = nbpExchangeRateService.getLastMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }
@@ -182,7 +182,7 @@ public class NbpExchangeRateServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<MaxAndMinRate> response = nbpExchangeRateService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
+        Optional<MaxAndMinRate> response = nbpExchangeRateService.getLastMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }

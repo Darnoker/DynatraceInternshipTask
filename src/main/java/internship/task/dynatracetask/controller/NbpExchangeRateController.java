@@ -24,10 +24,10 @@ public class NbpExchangeRateController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping(value = "/last/average-rate/{currencyCode}/{numberOfLastQuotations}")
-    public ResponseEntity<MaxAndMinRate> getMaxAndMinAverageExchangeRate(@PathVariable String currencyCode, @PathVariable Integer numberOfLastQuotations) {
+    @GetMapping(value = "/last/max-and-min-average-rate/{currencyCode}/{numberOfLastQuotations}")
+    public ResponseEntity<MaxAndMinRate> getLastMaxAndMinAverageExchangeRate(@PathVariable String currencyCode, @PathVariable Integer numberOfLastQuotations) {
         return nbpExchangeRateService
-                .getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations)
+                .getLastMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

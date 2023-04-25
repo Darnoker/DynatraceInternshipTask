@@ -49,8 +49,8 @@ public class NbpExchangeRateControllerTest {
     @ParameterizedTest
     @MethodSource("internship.task.dynatracetask.args.ControllerTestArgs#testLastMaxMinArgumentsController")
     public void testLastMaxAndMinRatesController(String currencyCode, Integer numberOfLastQuotations, MaxAndMinRate expectedResult) {
-        Mockito.when(nbpExchangeRateServiceMock.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations)).thenReturn(Optional.of(expectedResult));
-        ResponseEntity<MaxAndMinRate> responseEntity = nbpExchangeRateController.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
+        Mockito.when(nbpExchangeRateServiceMock.getLastMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations)).thenReturn(Optional.of(expectedResult));
+        ResponseEntity<MaxAndMinRate> responseEntity = nbpExchangeRateController.getLastMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Assertions.assertEquals(expectedResult, responseEntity.getBody());
@@ -60,8 +60,8 @@ public class NbpExchangeRateControllerTest {
     public void testLastMaxAndMinRatesControllerEmptyOptional() {
         String currencyCode = "USD";
         Integer numberOfLastQuotations = 10;
-        Mockito.when(nbpExchangeRateServiceMock.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations)).thenReturn(Optional.empty());
-        ResponseEntity<MaxAndMinRate> responseEntity = nbpExchangeRateController.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
+        Mockito.when(nbpExchangeRateServiceMock.getLastMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations)).thenReturn(Optional.empty());
+        ResponseEntity<MaxAndMinRate> responseEntity = nbpExchangeRateController.getLastMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         Assertions.assertNull(responseEntity.getBody());
