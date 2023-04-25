@@ -7,6 +7,7 @@ import internship.task.dynatracetask.response.SpreadResponse;
 import internship.task.dynatracetask.service.NbpService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -20,6 +21,7 @@ public class NbpServiceTest {
     private static NbpService nbpService;
     private static NbpConfig nbpConfig;
     private static RestTemplate restTemplate;
+
 
     @BeforeAll
     static void initializeService() {
@@ -86,4 +88,124 @@ public class NbpServiceTest {
         Assertions.assertTrue(majorDifferenceSpreadOptional.isPresent());
         Assertions.assertEquals(expectedResult, majorDifferenceSpreadOptional.get());
     }
+
+    @Test
+    public void testEmptyResponseForAverageExchangeRate() {
+        String currencyCode = "GBP";
+        String date = "2023-01-01";
+
+        final String URL = String.format(
+                "%s%s/%s/%s/",
+                nbpConfig.getApiUrl(),
+                "a",
+                currencyCode.toLowerCase(),
+                date
+        );
+
+        Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
+        Optional<Double> response = nbpService.getAverageExchangeRate(currencyCode, date);
+
+        Assertions.assertFalse(response.isPresent());
+    }
+
+    @Test
+    public void testNotValidFormatOfDateForAverageExchangeRate() {
+        String currencyCode = "GBP";
+        String date = "02.01.2023";
+
+        final String URL = String.format(
+                "%s%s/%s/%s/",
+                nbpConfig.getApiUrl(),
+                "a",
+                currencyCode.toLowerCase(),
+                date
+        );
+
+        Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
+        Optional<Double> response = nbpService.getAverageExchangeRate(currencyCode, date);
+
+        Assertions.assertFalse(response.isPresent());
+    }
+
+    @Test
+    public void testEmptyResponseForMaxAndMinAverageExchangeRate() {
+        String currencyCode = "GBP";
+        Integer numberOfLastQuotations = 0;
+
+        final String URL = String.format(
+                "%s%s/%s/last/%d/?format=json",
+                nbpConfig.getApiUrl(),
+                "a",
+                currencyCode.toLowerCase(),
+                numberOfLastQuotations
+        );
+
+        Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
+        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinRate(currencyCode, numberOfLastQuotations);
+
+        Assertions.assertFalse(response.isPresent());
+    }
+
+    @Test
+    public void testEmptyResponseForSpreadRate() {
+        String currencyCode = "GBP";
+        Integer numberOfLastQuotations = 0;
+
+        final String URL = String.format(
+                "%s%s/%s/last/%d/?format=json",
+                nbpConfig.getApiUrl(),
+                "a",
+                currencyCode.toLowerCase(),
+                numberOfLastQuotations
+        );
+
+        Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
+        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinRate(currencyCode, numberOfLastQuotations);
+
+        Assertions.assertFalse(response.isPresent());
+    }
+
+    @Test
+    public void testNotValidCurrencyCodeForMaxAndMinAverageExchangeRate() {
+        String currencyCode = "InvalidCurrencyCode";
+        Integer numberOfLastQuotations = 10;
+
+
+        final String URL = String.format(
+                "%s%s/%s/%s/",
+                nbpConfig.getApiUrl(),
+                "a",
+                currencyCode.toLowerCase(),
+                numberOfLastQuotations
+        );
+
+        Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
+        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinRate(currencyCode, numberOfLastQuotations);
+
+        Assertions.assertFalse(response.isPresent());
+    }
+
+    @Test
+    public void testNotValidCurrencyCodeForSpreadRate() {
+        String currencyCode = "InvalidCurrencyCode";
+        Integer numberOfLastQuotations = 0;
+
+
+        final String URL = String.format(
+                "%s%s/%s/%s/",
+                nbpConfig.getApiUrl(),
+                "a",
+                currencyCode.toLowerCase(),
+                numberOfLastQuotations
+        );
+
+        Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
+        Optional<Double> response = nbpService.getMajorDifferenceSpread(currencyCode, numberOfLastQuotations);
+
+        Assertions.assertFalse(response.isPresent());
+    }
+
+
+
+
 }
