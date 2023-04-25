@@ -21,7 +21,6 @@ public class NbpServiceTest {
     private static NbpConfig nbpConfig;
     private static RestTemplate restTemplate;
 
-
     @BeforeAll
     static void initializeService() {
         nbpConfig = Mockito.mock(NbpConfig.class);
@@ -29,7 +28,6 @@ public class NbpServiceTest {
         Mockito.when(nbpConfig.getApiUrl()).thenReturn(AVERAGE_RATE_API_URL);
         nbpService = new NbpService(nbpConfig, restTemplate);
     }
-
 
     @ParameterizedTest
     @MethodSource("internship.task.dynatracetask.args.ServiceTestArgs#testAverageRateArgumentsService")
@@ -82,6 +80,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, SpreadResponse.class)).thenReturn(response);
+
         Optional<Double> majorDifferenceSpreadOptional = nbpService.getMajorDifferenceSpread(currencyCode, numberOfLastQuotations);
 
         Assertions.assertTrue(majorDifferenceSpreadOptional.isPresent());

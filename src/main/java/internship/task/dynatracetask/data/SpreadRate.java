@@ -7,7 +7,6 @@ import lombok.ToString;
 @ToString
 public class SpreadRate {
 
-
     private Double bid;
     private Double ask;
 

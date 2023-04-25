@@ -19,7 +19,6 @@ public class NbpControllerTest {
     private static NbpController nbpController;
     private static NbpService nbpServiceMock;
 
-
     @BeforeAll
     static void initializeController() {
         nbpServiceMock = Mockito.mock(NbpService.class);
@@ -88,5 +87,4 @@ public class NbpControllerTest {
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         Assertions.assertNull(responseEntity.getBody());
     }
-
 }

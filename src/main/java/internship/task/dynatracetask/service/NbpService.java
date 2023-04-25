@@ -46,6 +46,7 @@ public class NbpService {
                     return Optional.of(response.getRates().get(0).getMid());
                 }
             }
+
         } catch (HttpClientErrorException e) {
             HttpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
         }
@@ -76,6 +77,7 @@ public class NbpService {
 
                 return Optional.of(maxAndMinRate);
             }
+
         } catch (HttpClientErrorException e) {
             HttpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
         }
