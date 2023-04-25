@@ -8,9 +8,9 @@ import lombok.ToString;
 import java.util.List;
 
 @Getter
-@ToString
 @NoArgsConstructor
-public class SpreadResponse {
+@ToString
+public class SpreadResponse implements NbpResponse<SpreadRate> {
 
     private List<SpreadRate> rates;
 

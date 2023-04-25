@@ -64,7 +64,7 @@ public class NbpServiceTest {
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(response);
 
-        Optional<MaxAndMinRate> maxAndMinRateOptional = nbpService.getMaxAndMinRate(currencyCode,numberOfLastQuotations);
+        Optional<MaxAndMinRate> maxAndMinRateOptional = nbpService.getMaxAndMinAverageExchangeRate(currencyCode,numberOfLastQuotations);
 
         Assertions.assertTrue(maxAndMinRateOptional.isPresent());
         Assertions.assertEquals(expectedResult, maxAndMinRateOptional.get());
@@ -141,7 +141,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinRate(currencyCode, numberOfLastQuotations);
+        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }
@@ -160,7 +160,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinRate(currencyCode, numberOfLastQuotations);
+        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }
@@ -180,7 +180,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinRate(currencyCode, numberOfLastQuotations);
+        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }

@@ -54,7 +54,7 @@ public class NbpService {
         return Optional.empty();
     }
 
-    public Optional<MaxAndMinRate> getMaxAndMinRate(String currencyCode, Integer numberOfLastQuotations) {
+    public Optional<MaxAndMinRate> getMaxAndMinAverageExchangeRate(String currencyCode, Integer numberOfLastQuotations) {
         final String URL = String.format(
                 "%s%s/%s/last/%d/?format=json",
                 nbpConfig.getApiUrl(),
