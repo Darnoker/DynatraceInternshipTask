@@ -7,14 +7,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class NbpControllerTest {
 
@@ -29,7 +27,7 @@ public class NbpControllerTest {
     }
 
     @ParameterizedTest
-    @MethodSource("internship.task.dynatracetask.args.TestArgs#testAverageRateArguments")
+    @MethodSource("internship.task.dynatracetask.args.ControllerTestArgs#testAverageRateArgumentsController")
     public void testAverageRateController(String currencyCode, String date, Double expectedValue) {
         Mockito.when(nbpServiceMock.getAverageExchangeRate(currencyCode, date)).thenReturn(Optional.of(expectedValue));
         ResponseEntity<Double> responseEntity = nbpController.getExchangeRate(currencyCode, date);
@@ -50,7 +48,7 @@ public class NbpControllerTest {
     }
 
     @ParameterizedTest
-    @MethodSource("internship.task.dynatracetask.args.TestArgs#testLastMaxMinArguments")
+    @MethodSource("internship.task.dynatracetask.args.ControllerTestArgs#testLastMaxMinArgumentsController")
     public void testLastMaxAndMinRatesController(String currencyCode, Integer numberOfLastQuotations, MaxAndMinRate expectedResult) {
         Mockito.when(nbpServiceMock.getMaxAndMinRate(currencyCode, numberOfLastQuotations)).thenReturn(Optional.of(expectedResult));
         ResponseEntity<MaxAndMinRate> responseEntity = nbpController.getMaxAndMinRate(currencyCode, numberOfLastQuotations);
@@ -71,7 +69,7 @@ public class NbpControllerTest {
     }
 
     @ParameterizedTest
-    @MethodSource("internship.task.dynatracetask.args.TestArgs#testSpreadArguments")
+    @MethodSource("internship.task.dynatracetask.args.ControllerTestArgs#testSpreadArgumentsController")
     public void testMajorDifferenceSpreadRateController(String currencyCode, Integer numberOfLastQuotations, Double expectedResult) {
         Mockito.when(nbpServiceMock.getMajorDifferenceSpread(currencyCode, numberOfLastQuotations)).thenReturn(Optional.of(expectedResult));
         ResponseEntity<Double> responseEntity = nbpController.getMajorDifferenceAskBid(currencyCode, numberOfLastQuotations);

@@ -32,7 +32,7 @@ public class NbpServiceTest {
 
 
     @ParameterizedTest
-    @MethodSource("internship.task.dynatracetask.args.TestArgs#testAverageRateArguments")
+    @MethodSource("internship.task.dynatracetask.args.ServiceTestArgs#testAverageRateArgumentsService")
     public void testAverageRateService(String currencyCode, String date, AverageExchangeRateResponse response, Double expectedResult) {
         final String URL = String.format(
                 "%s%s/%s/%s/",
@@ -51,7 +51,7 @@ public class NbpServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("internship.task.dynatracetask.args.TestArgs#testLastMaxMinArguments")
+    @MethodSource("internship.task.dynatracetask.args.ServiceTestArgs#testLastMaxMinArgumentsService")
     public void testLastMaxAndMinRateService(String currencyCode, Integer numberOfLastQuotations, AverageExchangeRateResponse response, MaxAndMinRate expectedResult) {
 
         final String URL = String.format(
@@ -71,7 +71,7 @@ public class NbpServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("internship.task.dynatracetask.args.TestArgs#testSpreadArguments")
+    @MethodSource("internship.task.dynatracetask.args.ServiceTestArgs#testSpreadArgumentsService")
     public void testMajorDifferenceSpreadRateService(String currencyCode, Integer numberOfLastQuotations, SpreadResponse response, Double expectedResult) {
         final String URL = String.format(
                 "%s%s/%s/last/%d/?format=json",
