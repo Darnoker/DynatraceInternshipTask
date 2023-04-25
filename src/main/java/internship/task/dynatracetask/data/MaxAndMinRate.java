@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.ToString;
 
 @Getter
-@ToString
 @EqualsAndHashCode
+@ToString
 public class MaxAndMinRate {
 
-    private double max;
-    private double min;
+    private Double max;
+    private Double min;
 
     public MaxAndMinRate(double max, double min) {
         this.max = max;

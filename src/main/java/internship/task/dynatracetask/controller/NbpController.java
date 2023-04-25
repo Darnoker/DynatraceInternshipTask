@@ -25,15 +25,15 @@ public class NbpController {
     }
 
     @GetMapping(value = "/last/average-rate/{currencyCode}/{numberOfLastQuotations}")
-    public ResponseEntity<MaxAndMinRate> getMaxAndMinRate(@PathVariable String currencyCode, @PathVariable Integer numberOfLastQuotations) {
+    public ResponseEntity<MaxAndMinRate> getMaxAndMinAverageExchangeRate(@PathVariable String currencyCode, @PathVariable Integer numberOfLastQuotations) {
         return nbpService
-                .getMaxAndMinRate(currencyCode, numberOfLastQuotations)
+                .getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping(value = "/last/spread/{currencyCode}/{numberOfLastQuotations}")
-    public ResponseEntity<Double> getMajorDifferenceAskBid(@PathVariable String currencyCode, @PathVariable Integer numberOfLastQuotations) {
+    public ResponseEntity<Double> getMajorDifferenceSpread(@PathVariable String currencyCode, @PathVariable Integer numberOfLastQuotations) {
         return nbpService
                 .getMajorDifferenceSpread(currencyCode, numberOfLastQuotations)
                 .map(ResponseEntity::ok)

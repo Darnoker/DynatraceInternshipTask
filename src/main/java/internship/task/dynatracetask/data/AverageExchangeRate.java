@@ -9,9 +9,9 @@ import lombok.ToString;
 @ToString
 public class AverageExchangeRate {
 
+    private Double mid;
+
     public AverageExchangeRate(Double mid) {
         this.mid = mid;
     }
-
-    private Double mid;
 }

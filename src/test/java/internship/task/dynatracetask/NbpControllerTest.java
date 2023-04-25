@@ -49,8 +49,8 @@ public class NbpControllerTest {
     @ParameterizedTest
     @MethodSource("internship.task.dynatracetask.args.ControllerTestArgs#testLastMaxMinArgumentsController")
     public void testLastMaxAndMinRatesController(String currencyCode, Integer numberOfLastQuotations, MaxAndMinRate expectedResult) {
-        Mockito.when(nbpServiceMock.getMaxAndMinRate(currencyCode, numberOfLastQuotations)).thenReturn(Optional.of(expectedResult));
-        ResponseEntity<MaxAndMinRate> responseEntity = nbpController.getMaxAndMinRate(currencyCode, numberOfLastQuotations);
+        Mockito.when(nbpServiceMock.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations)).thenReturn(Optional.of(expectedResult));
+        ResponseEntity<MaxAndMinRate> responseEntity = nbpController.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Assertions.assertEquals(expectedResult, responseEntity.getBody());
@@ -60,8 +60,8 @@ public class NbpControllerTest {
     public void testLastMaxAndMinRatesControllerEmptyOptional() {
         String currencyCode = "USD";
         Integer numberOfLastQuotations = 10;
-        Mockito.when(nbpServiceMock.getMaxAndMinRate(currencyCode, numberOfLastQuotations)).thenReturn(Optional.empty());
-        ResponseEntity<MaxAndMinRate> responseEntity = nbpController.getMaxAndMinRate(currencyCode, numberOfLastQuotations);
+        Mockito.when(nbpServiceMock.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations)).thenReturn(Optional.empty());
+        ResponseEntity<MaxAndMinRate> responseEntity = nbpController.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         Assertions.assertNull(responseEntity.getBody());
@@ -71,7 +71,7 @@ public class NbpControllerTest {
     @MethodSource("internship.task.dynatracetask.args.ControllerTestArgs#testSpreadArgumentsController")
     public void testMajorDifferenceSpreadRateController(String currencyCode, Integer numberOfLastQuotations, Double expectedResult) {
         Mockito.when(nbpServiceMock.getMajorDifferenceSpread(currencyCode, numberOfLastQuotations)).thenReturn(Optional.of(expectedResult));
-        ResponseEntity<Double> responseEntity = nbpController.getMajorDifferenceAskBid(currencyCode, numberOfLastQuotations);
+        ResponseEntity<Double> responseEntity = nbpController.getMajorDifferenceSpread(currencyCode, numberOfLastQuotations);
 
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Assertions.assertEquals(expectedResult, responseEntity.getBody());
@@ -82,7 +82,7 @@ public class NbpControllerTest {
         String currencyCode = "USD";
         Integer numberOfLastQuotations = 10;
         Mockito.when(nbpServiceMock.getMajorDifferenceSpread(currencyCode, numberOfLastQuotations)).thenReturn(Optional.empty());
-        ResponseEntity<Double> responseEntity = nbpController.getMajorDifferenceAskBid(currencyCode, numberOfLastQuotations);
+        ResponseEntity<Double> responseEntity = nbpController.getMajorDifferenceSpread(currencyCode, numberOfLastQuotations);
 
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         Assertions.assertNull(responseEntity.getBody());

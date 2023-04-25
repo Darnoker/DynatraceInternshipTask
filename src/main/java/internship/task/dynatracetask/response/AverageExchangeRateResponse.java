@@ -10,11 +10,11 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @ToString
-public class AverageExchangeRateResponse {
+public class AverageExchangeRateResponse implements NbpResponse<AverageExchangeRate> {
+
+    private List<AverageExchangeRate> rates;
 
     public AverageExchangeRateResponse(List<AverageExchangeRate> rates) {
         this.rates = rates;
     }
-
-    private List<AverageExchangeRate> rates;
 }
