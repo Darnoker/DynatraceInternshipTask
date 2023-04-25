@@ -3,14 +3,17 @@ package internship.task.dynatracetask.service;
 import internship.task.dynatracetask.config.NbpConfig;
 import internship.task.dynatracetask.data.AverageExchangeRate;
 import internship.task.dynatracetask.data.MaxAndMinRate;
+import internship.task.dynatracetask.exceptionhandler.HttpClientErrorExceptionHandler;
 import internship.task.dynatracetask.response.AverageExchangeRateResponse;
 import internship.task.dynatracetask.response.SpreadResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class NbpService {
@@ -19,6 +22,7 @@ public class NbpService {
     private final RestTemplate restTemplate;
     private final String tableTypeA = "a";
     private final String tableTypeC = "c";
+    private static final Logger LOGGER = Logger.getLogger(NbpService.class.getName());
 
     public NbpService(NbpConfig nbpConfig, RestTemplate restTemplate) {
         this.nbpConfig = nbpConfig;
@@ -33,14 +37,18 @@ public class NbpService {
                 currencyCode.toLowerCase(),
                 date
         );
+        try {
+            Optional<AverageExchangeRateResponse> responseOptional = Optional.ofNullable(restTemplate.getForObject(URL, AverageExchangeRateResponse.class));
 
-        Optional<AverageExchangeRateResponse> responseOptional = Optional.ofNullable(restTemplate.getForObject(URL, AverageExchangeRateResponse.class));
-
-        if(responseOptional.isPresent()) {
-            AverageExchangeRateResponse response = responseOptional.get();
-            if(!response.getRates().isEmpty()) {
-                return Optional.of(response.getRates().get(0).getMid());
+            if(responseOptional.isPresent()) {
+                System.out.println(responseOptional.get());
+                AverageExchangeRateResponse response = responseOptional.get();
+                if(!response.getRates().isEmpty()) {
+                    return Optional.of(response.getRates().get(0).getMid());
+                }
             }
+        } catch (HttpClientErrorException e) {
+            HttpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
         }
 
         return Optional.empty();
@@ -55,18 +63,22 @@ public class NbpService {
                 numberOfLastQuotations
         );
 
-        Optional<AverageExchangeRateResponse> responseOptional = Optional.ofNullable(restTemplate.getForObject(URL, AverageExchangeRateResponse.class));
+        try {
+            Optional<AverageExchangeRateResponse> responseOptional = Optional.ofNullable(restTemplate.getForObject(URL, AverageExchangeRateResponse.class));
 
-        if(responseOptional.isPresent()) {
-            AverageExchangeRateResponse response = responseOptional.get();
-            List<Double> values = response.getRates()
-                    .stream()
-                    .map(AverageExchangeRate::getMid)
-                    .toList();
+            if(responseOptional.isPresent()) {
+                AverageExchangeRateResponse response = responseOptional.get();
+                List<Double> values = response.getRates()
+                        .stream()
+                        .map(AverageExchangeRate::getMid)
+                        .toList();
 
-            MaxAndMinRate maxAndMinRate = new MaxAndMinRate(Collections.max(values), Collections.min(values));
+                MaxAndMinRate maxAndMinRate = new MaxAndMinRate(Collections.max(values), Collections.min(values));
 
-            return Optional.of(maxAndMinRate);
+                return Optional.of(maxAndMinRate);
+            }
+        } catch (HttpClientErrorException e) {
+            HttpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
         }
 
         return Optional.empty();
@@ -81,19 +93,24 @@ public class NbpService {
                 numberOfLastQuotations
         );
 
-        Optional<SpreadResponse> responseOptional = Optional.ofNullable(restTemplate.getForObject(URL, SpreadResponse.class));
+        try {
+            Optional<SpreadResponse> responseOptional = Optional.ofNullable(restTemplate.getForObject(URL, SpreadResponse.class));
 
-        if(responseOptional.isPresent()) {
-             ;
-            List<Double> values = responseOptional
-                    .get()
-                    .getRates()
-                    .stream()
-                    .map(askBidRate -> Math.abs(askBidRate.getBid() - askBidRate.getAsk()))
-                    .toList();
+            if(responseOptional.isPresent()) {
+                List<Double> values = responseOptional
+                        .get()
+                        .getRates()
+                        .stream()
+                        .map(askBidRate -> Math.abs(askBidRate.getBid() - askBidRate.getAsk()))
+                        .toList();
 
-            return Optional.of(Collections.max(values));
+                return Optional.of(Collections.max(values));
+            }
+
+        } catch (HttpClientErrorException e) {
+            HttpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
         }
+
         return Optional.empty();
     }
 }
