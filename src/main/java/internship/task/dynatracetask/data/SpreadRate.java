@@ -1,10 +1,12 @@
 package internship.task.dynatracetask.data;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
+@NoArgsConstructor
 public class SpreadRate {
 
     private Double bid;
