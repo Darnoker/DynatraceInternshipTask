@@ -2,10 +2,10 @@
 Written in Java Spring Boot with Maven.
 
 ### Main classes
-The classes where the main functionality is, are `NbpExchangeRateService` and `NbpExchangeRateController`
+The classes where the main functionality is, are `NbpExchangeRateService` and `NbpExchangeRateController`.
 
 ### Starting app
-Use `./mvnw spring-boot:run`
+Use `./mvnw spring-boot:run`.
 
 ### Example endpoints
 htttp://localhost:8080/exchange/GBP/2023-01-02 - for getting average exchange rate for specified date. <br>
