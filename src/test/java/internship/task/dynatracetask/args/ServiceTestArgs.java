@@ -10,9 +10,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class TestArgs {
+public class ServiceTestArgs {
 
-    public static Stream<Arguments> testAverageRateArguments() {
+    public static Stream<Arguments> testAverageRateArgumentsService() {
         return Stream.of(
                 Arguments.of(
                         "GBP",
@@ -49,7 +49,7 @@ public class TestArgs {
         );
     }
 
-    public static Stream<Arguments> testLastMaxMinArguments() {
+    public static Stream<Arguments> testLastMaxMinArgumentsService() {
         return Stream.of(
                 Arguments.of(
                         "GBP",
@@ -121,7 +121,7 @@ public class TestArgs {
         );
     }
 
-    public static Stream<Arguments> testSpreadArguments() {
+    public static Stream<Arguments> testSpreadArgumentsService() {
         return Stream.of(
                 Arguments.of(
                         "GBP",
@@ -187,7 +187,6 @@ public class TestArgs {
                                         new SpreadRate(4.1532, 4.2372),
                                         new SpreadRate(4.1629, 4.2471),
                                         new SpreadRate(4.1329, 4.2163)
-
                                 )
                         ),
                         0.08440000000000047
