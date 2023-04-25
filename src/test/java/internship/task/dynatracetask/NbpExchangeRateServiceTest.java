@@ -2,9 +2,10 @@ package internship.task.dynatracetask;
 
 import internship.task.dynatracetask.config.NbpConfig;
 import internship.task.dynatracetask.data.MaxAndMinRate;
+import internship.task.dynatracetask.exceptionhandler.HttpClientErrorExceptionHandler;
 import internship.task.dynatracetask.response.AverageExchangeRateResponse;
 import internship.task.dynatracetask.response.SpreadResponse;
-import internship.task.dynatracetask.service.NbpService;
+import internship.task.dynatracetask.service.NbpExchangeRateService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,12 +16,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
-public class NbpServiceTest {
+public class NbpExchangeRateServiceTest {
 
     private static final String AVERAGE_RATE_API_URL = "https://api.nbp.pl/api/exchangerates/rates/";
-    private static NbpService nbpService;
+    private static NbpExchangeRateService nbpExchangeRateService;
     private static NbpConfig nbpConfig;
     private static RestTemplate restTemplate;
+
 
 
     @BeforeAll
@@ -28,7 +30,7 @@ public class NbpServiceTest {
         nbpConfig = Mockito.mock(NbpConfig.class);
         restTemplate = Mockito.mock(RestTemplate.class);
         Mockito.when(nbpConfig.getApiUrl()).thenReturn(AVERAGE_RATE_API_URL);
-        nbpService = new NbpService(nbpConfig, restTemplate);
+        nbpExchangeRateService = new NbpExchangeRateService(nbpConfig, restTemplate, new HttpClientErrorExceptionHandler());
     }
 
     @ParameterizedTest
@@ -44,7 +46,7 @@ public class NbpServiceTest {
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(response);
 
-        Optional<Double> exchangeRateOptional = nbpService.getAverageExchangeRate(currencyCode, date);
+        Optional<Double> exchangeRateOptional = nbpExchangeRateService.getAverageExchangeRate(currencyCode, date);
 
         Assertions.assertTrue(exchangeRateOptional.isPresent());
         Assertions.assertEquals(expectedResult, exchangeRateOptional.get());
@@ -64,7 +66,7 @@ public class NbpServiceTest {
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(response);
 
-        Optional<MaxAndMinRate> maxAndMinRateOptional = nbpService.getMaxAndMinAverageExchangeRate(currencyCode,numberOfLastQuotations);
+        Optional<MaxAndMinRate> maxAndMinRateOptional = nbpExchangeRateService.getMaxAndMinAverageExchangeRate(currencyCode,numberOfLastQuotations);
 
         Assertions.assertTrue(maxAndMinRateOptional.isPresent());
         Assertions.assertEquals(expectedResult, maxAndMinRateOptional.get());
@@ -83,7 +85,7 @@ public class NbpServiceTest {
 
         Mockito.when(restTemplate.getForObject(URL, SpreadResponse.class)).thenReturn(response);
 
-        Optional<Double> majorDifferenceSpreadOptional = nbpService.getMajorDifferenceSpread(currencyCode, numberOfLastQuotations);
+        Optional<Double> majorDifferenceSpreadOptional = nbpExchangeRateService.getMajorDifferenceSpreadRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertTrue(majorDifferenceSpreadOptional.isPresent());
         Assertions.assertEquals(expectedResult, majorDifferenceSpreadOptional.get());
@@ -103,7 +105,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<Double> response = nbpService.getAverageExchangeRate(currencyCode, date);
+        Optional<Double> response = nbpExchangeRateService.getAverageExchangeRate(currencyCode, date);
 
         Assertions.assertFalse(response.isPresent());
     }
@@ -122,7 +124,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<Double> response = nbpService.getAverageExchangeRate(currencyCode, date);
+        Optional<Double> response = nbpExchangeRateService.getAverageExchangeRate(currencyCode, date);
 
         Assertions.assertFalse(response.isPresent());
     }
@@ -141,7 +143,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
+        Optional<MaxAndMinRate> response = nbpExchangeRateService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }
@@ -160,7 +162,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
+        Optional<MaxAndMinRate> response = nbpExchangeRateService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }
@@ -180,7 +182,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<MaxAndMinRate> response = nbpService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
+        Optional<MaxAndMinRate> response = nbpExchangeRateService.getMaxAndMinAverageExchangeRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }
@@ -200,7 +202,7 @@ public class NbpServiceTest {
         );
 
         Mockito.when(restTemplate.getForObject(URL, AverageExchangeRateResponse.class)).thenReturn(null);
-        Optional<Double> response = nbpService.getMajorDifferenceSpread(currencyCode, numberOfLastQuotations);
+        Optional<Double> response = nbpExchangeRateService.getMajorDifferenceSpreadRate(currencyCode, numberOfLastQuotations);
 
         Assertions.assertFalse(response.isPresent());
     }
