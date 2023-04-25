@@ -16,17 +16,19 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
-public class NbpService {
+public class NbpExchangeRateService {
 
     private final NbpConfig nbpConfig;
     private final RestTemplate restTemplate;
     private final String tableTypeA = "a";
     private final String tableTypeC = "c";
-    private static final Logger LOGGER = Logger.getLogger(NbpService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NbpExchangeRateService.class.getName());
+    private final HttpClientErrorExceptionHandler httpClientErrorExceptionHandler;
 
-    public NbpService(NbpConfig nbpConfig, RestTemplate restTemplate) {
+    public NbpExchangeRateService(NbpConfig nbpConfig, RestTemplate restTemplate, HttpClientErrorExceptionHandler httpClientErrorExceptionHandler) {
         this.nbpConfig = nbpConfig;
         this.restTemplate = restTemplate;
+        this.httpClientErrorExceptionHandler = httpClientErrorExceptionHandler;
     }
 
     public Optional<Double> getAverageExchangeRate(String currencyCode, String date) {
@@ -48,7 +50,7 @@ public class NbpService {
             }
 
         } catch (HttpClientErrorException e) {
-            HttpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
+            httpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
         }
 
         return Optional.empty();
@@ -79,13 +81,13 @@ public class NbpService {
             }
 
         } catch (HttpClientErrorException e) {
-            HttpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
+            httpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
         }
 
         return Optional.empty();
     }
 
-    public Optional<Double> getMajorDifferenceSpread(String currencyCode, Integer numberOfLastQuotations) {
+    public Optional<Double> getMajorDifferenceSpreadRate(String currencyCode, Integer numberOfLastQuotations) {
         final String URL = String.format(
                 "%s%s/%s/last/%d/?format=json",
                 nbpConfig.getApiUrl(),
@@ -109,7 +111,7 @@ public class NbpService {
             }
 
         } catch (HttpClientErrorException e) {
-            HttpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
+            httpClientErrorExceptionHandler.sendErrorInformation(e.getStatusCode(), LOGGER);
         }
 
         return Optional.empty();
